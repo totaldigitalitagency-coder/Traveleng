@@ -1,68 +1,4 @@
-  "numbers": [
-    { "id": "0", "number": "0", "word": "Zero", "phonetic": "Ziro" },
-    { "id": "1", "number": "1", "word": "One", "phonetic": "Van" },
-    { "id": "2", "number": "2", "word": "Two", "phonetic": "Tu" },
-    { "id": "3", "number": "3", "word": "Three", "phonetic": "Tri" },
-    { "id": "4", "number": "4", "word": "Four", "phonetic": "For" },
-    { "id": "5", "number": "5", "word": "Five", "phonetic": "Fajv" },
-    { "id": "6", "number": "6", "word": "Six", "phonetic": "Siks" },
-    { "id": "7", "number": "7", "word": "Seven", "phonetic": "Seven" },
-    { "id": "8", "number": "8", "word": "Eight", "phonetic": "Ejt" },
-    { "id": "9", "number": "9", "word": "Nine", "phonetic": "Najn" },
-    { "id": "10", "number": "10", "word": "Ten", "phonetic": "Ten" },
-    { "id": "11", "number": "11", "word": "Eleven", "phonetic": "Ileven" },
-    { "id": "12", "number": "12", "word": "Twelve", "phonetic": "Tvelv" },
-    { "id": "13", "number": "13", "word": "Thirteen", "phonetic": "Tertin" },
-    { "id": "14", "number": "14", "word": "Fourteen", "phonetic": "Fortin" },
-    { "id": "15", "number": "15", "word": "Fifteen", "phonetic": "Fiftin" },
-    { "id": "16", "number": "16", "word": "Sixteen", "phonetic": "Sikstin" },
-    { "id": "17", "number": "17", "word": "Seventeen", "phonetic": "Seventin" },
-    { "id": "18", "number": "18", "word": "Eighteen", "phonetic": "Ejtin" },
-    { "id": "19", "number": "19", "word": "Nineteen", "phonetic": "Najntin" },
-    { "id": "20", "number": "20", "word": "Twenty", "phonetic": "Tventi" },
-    { "id": "21", "number": "21", "word": "Twenty-one", "phonetic": "Tventi-van" },
-    { "id": "30", "number": "30", "word": "Thirty", "phonetic": "Terti" },
-    { "id": "40", "number": "40", "word": "Forty", "phonetic": "Forti" },
-    { "id": "50", "number": "50", "word": "Fifty", "phonetic": "Fifti" },
-    { "id": "60", "number": "60", "word": "Sixty", "phonetic": "Siksti" },
-    { "id": "70", "number": "70", "word": "Seventy", "phonetic": "Seventi" },
-    { "id": "80", "number": "80", "word": "Eighty", "phonetic": "Ejti" },
-    { "id": "90", "number": "90", "word": "Ninety", "phonetic": "Najnti" },
-    { "id": "100", "number": "100", "word": "One hundred", "phonetic": "Van handred" },
-    { "id": "200", "number": "200", "word": "Two hundred", "phonetic": "Tu handred" },
-    { "id": "500", "number": "500", "word": "Five hundred", "phonetic": "Fajv handred" },
-    { "id": "1000", "number": "1000", "word": "One thousand", "phonetic": "Van tauzand" },
-    { "id": "1000000", "number": "1 000 000", "word": "One million", "phonetic": "Van miljon" }
-  ],
-  "alphabet": [
-    { "letter": "A", "word": "Apple", "phonetic": "/eɪ/", "izgovor": "Ej" },
-    { "letter": "B", "word": "Boy", "phonetic": "/biː/", "izgovor": "Bi" },
-    { "letter": "C", "word": "Cat", "phonetic": "/siː/", "izgovor": "Si" },
-    { "letter": "D", "word": "Dog", "phonetic": "/diː/", "izgovor": "Di" },
-    { "letter": "E", "word": "Elephant", "phonetic": "/iː/", "izgovor": "I" },
-    { "letter": "F", "word": "Fish", "phonetic": "/ɛf/", "izgovor": "Ef" },
-    { "letter": "G", "word": "Giraffe", "phonetic": "/dʒiː/", "izgovor": "Dži" },
-    { "letter": "H", "word": "House", "phonetic": "/eɪtʃ/", "izgovor": "Ejč" },
-    { "letter": "I", "word": "Ice", "phonetic": "/aɪ/", "izgovor": "Aj" },
-    { "letter": "J", "word": "Jacket", "phonetic": "/dʒeɪ/", "izgovor": "Džej" },
-    { "letter": "K", "word": "King", "phonetic": "/keɪ/", "izgovor": "Kej" },
-    { "letter": "L", "word": "Lion", "phonetic": "/ɛl/", "izgovor": "El" },
-    { "letter": "M", "word": "Monkey", "phonetic": "/ɛm/", "izgovor": "Em" },
-    { "letter": "N", "word": "Nest", "phonetic": "/ɛn/", "izgovor": "En" },
-    { "letter": "O", "word": "Orange", "phonetic": "/oʊ/", "izgovor": "Ou" },
-    { "letter": "P", "word": "Pen", "phonetic": "/piː/", "izgovor": "Pi" },
-    { "letter": "Q", "word": "Queen", "phonetic": "/kjuː/", "izgovor": "Kju" },
-    { "letter": "R", "word": "Sun", "phonetic": "/ɑːr/", "izgovor": "Ar" },
-    { "letter": "S", "word": "Sun", "phonetic": "/ɛs/", "izgovor": "Es" },
-    { "letter": "T", "word": "Table", "phonetic": "/tiː/", "izgovor": "Ti" },
-    { "letter": "U", "word": "Umbrella", "phonetic": "/juː/", "izgovor": "Ju" },
-    { "letter": "V", "word": "Van", "phonetic": "/viː/", "izgovor": "Vi" },
-    { "letter": "W", "word": "Water", "phonetic": "/ˈdʌbəl.juː/", "izgovor": "Dabl-ju" },
-    { "letter": "X", "word": "Box", "phonetic": "/ɛks/", "izgovor": "Eks" },
-    { "letter": "Y", "word": "Yellow", "phonetic": "/waɪ/", "izgovor": "Vaj" },
-    { "letter": "Z", "word": "Zebra", "phonetic": "/zɛd/", "izgovor": "Zed" }
-  ],
-
+{
   "dictionary": [
     {
       "id": "1",
@@ -18572,4 +18508,4 @@
       "correct": "Хвала"
     }
   ]
-    }
+}
