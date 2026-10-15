@@ -1,1 +1,37 @@
+{
+  "dolchWords": [
+    { "id": "1", "en": "the", "sr": "određeni član (taj, ta, to)", "category": "Pre-Primer" },
+    { "id": "2", "en": "to", "sr": "ka, prema, u", "category": "Pre-Primer" },
+    { "id": "3", "en": "and", "sr": "i", "category": "Pre-Primer" },
+    { "id": "4", "en": "a", "sr": "neodređeni član (jedan, neka)", "category": "Pre-Primer" },
+    { "id": "5", "en": "in", "sr": "u, unutar", "category": "Pre-Primer" },
+    { "id": "6", "en": "is", "sr": "jeste, je", "category": "Pre-Primer" },
+    { "id": "7", "en": "you", "sr": "ti, vi", "category": "Pre-Primer" },
+    { "id": "8", "en": "that", "sr": "to, taj, ta", "category": "Pre-Primer" },
+    { "id": "9", "en": "it", "sr": "to, ono", "category": "Pre-Primer" },
+    { "id": "10", "en": "he", "sr": "on", "category": "Pre-Primer" }
+  ],
+  "travelPhrases": [
+    { "id": "t1", "category": "✈️ Aerodrom", "en": "Where is my gate?", "sr": "Gde je moj izlaz?" },
+    { "id": "t2", "category": "✈️ Aerodrom", "en": "I would like to check in.", "sr": "Želeo/la bih da se prijavim." },
+    { "id": "t3", "category": "🏨 Hotel", "en": "I have a reservation.", "sr": "Imam rezervaciju." },
+    { "id": "t4", "category": "🏨 Hotel", "en": "What time is breakfast?", "sr": "U koliko sati je doručak?" },
+    { "id": "t5", "category": "🍽️ Restoran", "en": "Could I see the menu, please?", "sr": "Mogu li dobiti meni, molim Vas?" },
+    { "id": "t6", "category": "🍽️ Restoran", "en": "The bill, please.", "sr": "Račun, molim." }
+  ],
+  "quizzes": [
+    {
+      "id": "q1",
+      "question": "Kako se na engleskom kaže 'Hvala'?",
+      "options": ["Sorry", "Thank you", "Please", "Hello"],
+      "correct": "Thank you"
+    },
+    {
+      "id": "q2",
+      "question": "Šta znači reč 'Book'?",
+      "options": ["Knjiga", "Olovka", "Sto", "Voda"],
+      "correct": "Knjiga"
+    }
+  ]
+}
 
