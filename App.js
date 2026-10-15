@@ -6,32 +6,36 @@ import {
   TouchableOpacity, 
   ScrollView, 
   SafeAreaView, 
-  StatusBar 
+  StatusBar,
+  FlatList,
+  TextInput
 } from 'react-native';
+
+// Uvoz lokalnih podataka iz JSON fajla
+import appData from './data.json';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeModule, setActiveModule] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [quizScore, setQuizScore] = useState(0);
 
   const modules = [
-    { id: 'pocetna', title: 'Početna', subtitle: 'Dnevni napredak i ciljevi', icon: '🏠' },
-    { id: 'ucenje', title: 'Učenje engleskog', subtitle: 'Lekcije po nivoima (A1-B2)', icon: '📚' },
-    { id: 'dolch', title: 'Dolch lista reči', subtitle: '315 osnovnih reči i imenica', icon: '🔤' },
-    { id: 'recnik', title: 'Rečnik', subtitle: 'Pretraga 2000+ englesko-srpskih reči', icon: '📖' },
-    { id: 'kvizovi', title: 'Kvizovi i testovi', subtitle: 'Provera znanja kroz 8 tipova pitanja', icon: '🧩' },
-    { id: 'gramatika', title: 'Gramatika', subtitle: 'Lekcije i objašnjenja na srpskom', icon: '📝' },
-    { id: 'prevodilac', title: 'Prevodilac', subtitle: 'Englesko-srpski prevod', icon: '🌐' },
-    { id: 'izgovor', title: 'Izgovor i slušanje', subtitle: 'Slušanje i vežbe izgovora', icon: '🎧' },
-    { id: 'putovanja', title: 'Engleski za putovanja', subtitle: 'Aerodrom, hotel, restoran, apoteka', icon: '✈️' },
-    { id: 'moje_reci', title: 'Moje reči', subtitle: 'Lični rečnik i omiljene reči', icon: '⭐' },
-    { id: 'statistika', title: 'Statistika napretka', subtitle: 'Praćenje savladanih reči', icon: '📊' },
-    { id: 'podesavanja', title: 'Podešavanja', subtitle: 'Dnevni cilj i opcije', icon: '⚙️' },
+    { id: 'dolch', title: 'Dolch lista reči', subtitle: 'Osnovne reči sa prevodom', icon: '🔤' },
+    { id: 'putovanja', title: 'Engleski za putovanja', subtitle: 'Fraze za aerodrom, hotel, restoran', icon: '✈️' },
+    { id: 'kvizovi', title: 'Kvizovi i testovi', subtitle: 'Proveri svoje znanje', icon: '🧩' },
   ];
 
-  const handleModulePress = (module) => {
-    setSelectedCategory(module);
-    setCurrentScreen('detail');
+  const openModule = (mod) => {
+    setActiveModule(mod);
+    setCurrentScreen('module');
+    setSearchQuery('');
   };
+
+  const filteredDolch = appData.dolchWords.filter(item => 
+    item.en.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.sr.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,7 +44,7 @@ export default function App() {
       {/* Header Banner */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Dobrodošli u Traveleng! 🚀</Text>
-        <Text style={styles.headerSubtitle}>Dnevni cilj: 10/20 minuta | Streak: 🔥 3 dana</Text>
+        <Text style={styles.headerSubtitle}>Lokalna baza učitana | Status: Offline spreman</Text>
       </View>
 
       {currentScreen === 'home' ? (
@@ -52,7 +56,7 @@ export default function App() {
                 key={item.id}
                 style={styles.card}
                 activeOpacity={0.7}
-                onPress={() => handleModulePress(item)}
+                onPress={() => openModule(item)}
               >
                 <Text style={styles.cardIcon}>{item.icon}</Text>
                 <View style={styles.cardTextContainer}>
@@ -72,14 +76,71 @@ export default function App() {
             <Text style={styles.backButtonText}>⬅ Nazad na početnu</Text>
           </TouchableOpacity>
           
-          <View style={styles.detailCard}>
-            <Text style={styles.detailIcon}>{selectedCategory?.icon}</Text>
-            <Text style={styles.detailTitle}>{selectedCategory?.title}</Text>
-            <Text style={styles.detailSubtitle}>{selectedCategory?.subtitle}</Text>
-            <Text style={styles.detailBody}>
-              Modul je uspešno pokrenut! Ovde možete ubaciti vašu specifičnu logiku i lekcije za {selectedCategory?.title}.
-            </Text>
-          </View>
+          <Text style={styles.detailTitle}>{activeModule?.icon} {activeModule?.title}</Text>
+
+          {/* RENDERING DOLCH LISTA */}
+          {activeModule?.id === 'dolch' && (
+            <View style={{ flex: 1 }}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Pretraži reči (engleski ili srpski)..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+              />
+              <FlatList
+                data={filteredDolch}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <View style={styles.listItem}>
+                    <Text style={styles.wordEn}>{item.en}</Text>
+                    <Text style={styles.wordSr}>{item.sr}</Text>
+                  </View>
+                )}
+              />
+            </View>
+          )}
+
+          {/* RENDERING PUTOVANJA */}
+          {activeModule?.id === 'putovanja' && (
+            <FlatList
+              data={appData.travelPhrases}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.listItem}>
+                  <Text style={styles.categoryBadge}>{item.category}</Text>
+                  <Text style={styles.wordEn}>{item.en}</Text>
+                  <Text style={styles.wordSr}>{item.sr}</Text>
+                </View>
+              )}
+            />
+          )}
+
+          {/* RENDERING KVIZOVI */}
+          {activeModule?.id === 'kvizovi' && (
+            <ScrollView style={{ flex: 1 }}>
+              {appData.quizzes.map((q) => (
+                <View key={q.id} style={styles.quizCard}>
+                  <Text style={styles.quizQuestion}>{q.question}</Text>
+                  {q.options.map((opt, idx) => (
+                    <TouchableOpacity 
+                      key={idx} 
+                      style={styles.optionBtn}
+                      onPress={() => {
+                        if (opt === q.correct) {
+                          alert('Tačno! 🎉');
+                        } else {
+                          alert('Netačno, pokušaj ponovo.');
+                        }
+                      }}
+                    >
+                      <Text style={styles.optionText}>{opt}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              ))}
+            </ScrollView>
+          )}
+
         </View>
       )}
     </SafeAreaView>
@@ -132,10 +193,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 16,
     elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
   cardIcon: {
     fontSize: 32,
@@ -169,32 +226,64 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: 'bold',
   },
-  detailCard: {
-    backgroundColor: '#ffffff',
-    padding: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    elevation: 3,
-  },
-  detailIcon: {
-    fontSize: 64,
-    marginBottom: 12,
-  },
   detailTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#0f172a',
+    marginBottom: 16,
   },
-  detailSubtitle: {
-    fontSize: 14,
-    color: '#64748b',
+  searchInput: {
+    backgroundColor: '#ffffff',
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    marginBottom: 12,
+  },
+  listItem: {
+    backgroundColor: '#ffffff',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: '#2563eb',
+  },
+  wordEn: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+  },
+  wordSr: {
+    fontSize: 15,
+    color: '#475569',
     marginTop: 4,
   },
-  detailBody: {
+  categoryBadge: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#2563eb',
+    marginBottom: 4,
+  },
+  quizCard: {
+    backgroundColor: '#ffffff',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  quizQuestion: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0f172a',
+    marginBottom: 12,
+  },
+  optionBtn: {
+    backgroundColor: '#f1f5f9',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  optionText: {
     fontSize: 16,
     color: '#334155',
-    textAlign: 'center',
-    marginTop: 20,
-    lineHeight: 24,
   },
 });
