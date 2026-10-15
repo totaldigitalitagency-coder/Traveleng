@@ -8,30 +8,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+      - name: Install Expo CLI & Dependencies
+        run: |
+          npm install -g expo-cli
+          npm install
 
-      - name: Setup Java
+      - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Prebuild React Native App
+      - name: Generate Android Native Project
         run: npx expo prebuild --platform android
 
-      - name: Build Android APK (Gradle)
+      - name: Build APK via Gradle
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
