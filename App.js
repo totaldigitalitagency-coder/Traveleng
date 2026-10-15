@@ -1,70 +1,200 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions, Alert } from 'react-native';
-
-const MODULES = [
-  { id: '1', title: 'Početna', desc: 'Dnevni napredak i ciljevi', icon: '🏠' },
-  { id: '2', title: 'Učenje engleskog', desc: 'Lekcije po nivoima (A1-B2)', icon: '📚' },
-  { id: '3', title: 'Dolch lista reči', desc: '315 osnovnih reči i imenica', icon: '🔤' },
-  { id: '4', title: 'Rečnik', desc: 'Pretraga 2000+ englesko-srpskih reči', icon: '📖' },
-  { id: '5', title: 'Kvizovi i testovi', desc: 'Provera znanja kroz 8 tipova pitanja', icon: '🧩' },
-  { id: '6', title: 'Gramatika', desc: 'Lekcije i objašnjenja na srpskom', icon: '📝' },
-  { id: '7', title: 'Prevodilac', desc: 'Englesko-srpski prevod', icon: '🌐' },
-  { id: '8', title: 'Izgovor i slušanje', desc: 'Slušanje i vežbe izgovora', icon: '🎧' },
-  { id: '9', title: 'Engleski za putovanja', desc: 'Aerodrom, hotel, restoran, apoteka', icon: '✈️' },
-  { id: '10', title: 'Moje reči', desc: 'Lični rečnik i omiljene reči', icon: '⭐' },
-  { id: '11', title: 'Statistika napretka', desc: 'Praćenje savladanih reči', icon: '📊' },
-  { id: '12', title: 'Podešavanja', desc: 'Dnevni cilj i opcije', icon: '⚙️' },
-];
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  ScrollView, 
+  SafeAreaView, 
+  StatusBar 
+} from 'react-native';
 
 export default function App() {
-  const { width } = useWindowDimensions();
-  const isTablet = width > 600;
-  const cardWidth = isTablet ? (width - 60) / 2 : width - 32;
+  const [currentScreen, setCurrentScreen] = useState('home');
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const handlePress = (title) => {
-    Alert.alert("Traveleng", `Otvaram modul: ${title}`);
+  const modules = [
+    { id: 'pocetna', title: 'Početna', subtitle: 'Dnevni napredak i ciljevi', icon: '🏠' },
+    { id: 'ucenje', title: 'Učenje engleskog', subtitle: 'Lekcije po nivoima (A1-B2)', icon: '📚' },
+    { id: 'dolch', title: 'Dolch lista reči', subtitle: '315 osnovnih reči i imenica', icon: '🔤' },
+    { id: 'recnik', title: 'Rečnik', subtitle: 'Pretraga 2000+ englesko-srpskih reči', icon: '📖' },
+    { id: 'kvizovi', title: 'Kvizovi i testovi', subtitle: 'Provera znanja kroz 8 tipova pitanja', icon: '🧩' },
+    { id: 'gramatika', title: 'Gramatika', subtitle: 'Lekcije i objašnjenja na srpskom', icon: '📝' },
+    { id: 'prevodilac', title: 'Prevodilac', subtitle: 'Englesko-srpski prevod', icon: '🌐' },
+    { id: 'izgovor', title: 'Izgovor i slušanje', subtitle: 'Slušanje i vežbe izgovora', icon: '🎧' },
+    { id: 'putovanja', title: 'Engleski za putovanja', subtitle: 'Aerodrom, hotel, restoran, apoteka', icon: '✈️' },
+    { id: 'moje_reci', title: 'Moje reči', subtitle: 'Lični rečnik i omiljene reči', icon: '⭐' },
+    { id: 'statistika', title: 'Statistika napretka', subtitle: 'Praćenje savladanih reči', icon: '📊' },
+    { id: 'podesavanja', title: 'Podešavanja', subtitle: 'Dnevni cilj i opcije', icon: '⚙️' },
+  ];
+
+  const handleModulePress = (module) => {
+    setSelectedCategory(module);
+    setCurrentScreen('detail');
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.banner}>
-        <Text style={styles.bannerTitle}>Dobrodošli u Traveleng! 🚀</Text>
-        <Text style={styles.bannerSubtitle}>Dnevni cilj: 10/20 minuta | Streak: 🔥 3 dana</Text>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1e293b" />
+      
+      {/* Header Banner */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Dobrodošli u Traveleng! 🚀</Text>
+        <Text style={styles.headerSubtitle}>Dnevni cilj: 10/20 minuta | Streak: 🔥 3 dana</Text>
       </View>
 
-      <Text style={styles.sectionHeader}>Glavni moduli za tablet</Text>
-
-      <View style={styles.grid}>
-        {MODULES.map((item) => (
+      {currentScreen === 'home' ? (
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <Text style={styles.sectionTitle}>Glavni moduli za tablet</Text>
+          <View style={styles.grid}>
+            {modules.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={styles.card}
+                activeOpacity={0.7}
+                onPress={() => handleModulePress(item)}
+              >
+                <Text style={styles.cardIcon}>{item.icon}</Text>
+                <View style={styles.cardTextContainer}>
+                  <Text style={styles.cardTitle}>{item.title}</Text>
+                  <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      ) : (
+        <View style={styles.detailContainer}>
           <TouchableOpacity 
-            key={item.id} 
-            style={[styles.card, { width: cardWidth }]}
-            onPress={() => handlePress(item.title)}
-            activeOpacity={0.7}
+            style={styles.backButton}
+            onPress={() => setCurrentScreen('home')}
           >
-            <Text style={styles.cardIcon}>{item.icon}</Text>
-            <View style={styles.cardTextContainer}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardDesc}>{item.desc}</Text>
-            </View>
+            <Text style={styles.backButtonText}>⬅ Nazad na početnu</Text>
           </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+          
+          <View style={styles.detailCard}>
+            <Text style={styles.detailIcon}>{selectedCategory?.icon}</Text>
+            <Text style={styles.detailTitle}>{selectedCategory?.title}</Text>
+            <Text style={styles.detailSubtitle}>{selectedCategory?.subtitle}</Text>
+            <Text style={styles.detailBody}>
+              Modul je uspešno pokrenut! Ovde možete ubaciti vašu specifičnu logiku i lekcije za {selectedCategory?.title}.
+            </Text>
+          </View>
+        </View>
+      )}
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F5F7FA' },
-  content: { padding: 16 },
-  banner: { backgroundColor: '#1A2530', borderRadius: 12, padding: 20, marginBottom: 20 },
-  bannerTitle: { color: '#FFFFFF', fontSize: 22, fontWeight: 'bold' },
-  bannerSubtitle: { color: '#2E8B57', fontSize: 15, marginTop: 6, fontWeight: '600' },
-  sectionHeader: { fontSize: 18, fontWeight: 'bold', color: '#1C2833', marginBottom: 12 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  card: { backgroundColor: '#FFFFFF', borderRadius: 10, padding: 16, marginBottom: 12, flexDirection: 'row', alignItems: 'center', elevation: 2 },
-  cardIcon: { fontSize: 28, marginRight: 14 },
-  cardTextContainer: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: 'bold', color: '#1C2833' },
-  cardDesc: { fontSize: 13, color: '#7F8C8D', marginTop: 2 },
+  container: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+  },
+  header: {
+    backgroundColor: '#1e293b',
+    padding: 20,
+    borderRadius: 12,
+    margin: 16,
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  headerSubtitle: {
+    color: '#4ade80',
+    fontSize: 14,
+    marginTop: 6,
+    fontWeight: '600',
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0f172a',
+    marginBottom: 16,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    width: '48%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  cardIcon: {
+    fontSize: 32,
+    marginRight: 12,
+  },
+  cardTextContainer: {
+    flex: 1,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1e293b',
+  },
+  cardSubtitle: {
+    fontSize: 12,
+    color: '#64748b',
+    marginTop: 2,
+  },
+  detailContainer: {
+    flex: 1,
+    padding: 16,
+  },
+  backButton: {
+    backgroundColor: '#2563eb',
+    padding: 12,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    marginBottom: 16,
+  },
+  backButtonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  detailCard: {
+    backgroundColor: '#ffffff',
+    padding: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    elevation: 3,
+  },
+  detailIcon: {
+    fontSize: 64,
+    marginBottom: 12,
+  },
+  detailTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#0f172a',
+  },
+  detailSubtitle: {
+    fontSize: 14,
+    color: '#64748b',
+    marginTop: 4,
+  },
+  detailBody: {
+    fontSize: 16,
+    color: '#334155',
+    textAlign: 'center',
+    marginTop: 20,
+    lineHeight: 24,
+  },
 });
