@@ -1,170 +1,173 @@
-import React, { useState } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  ScrollView, 
-  SafeAreaView, 
-  FlatList,
-  StatusBar
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+  Dimensions,
+  Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Speech from 'expo-speech';
-import appData from './data.json';
+
+// Učitavanje baze reči
+import rawDictionaryData from './data.json';
+
+const { width } = Dimensions.get('window');
+const IS_TABLET = width >= 600;
 
 export default function App() {
-  const [activeModule, setActiveModule] = useState('home');
+  const [currentScreen, setCurrentScreen] = useState('HOME');
+  const [dictionary, setDictionary] = useState([]);
+  const [learnedWords, setLearnedWords] = useState([]);
+  const [favoriteWords, setFavoriteWords] = useState([]);
+  const [dailyTarget, setDailyTarget] = useState(20);
+  const [streakDays, setStreakDays] = useState(3);
 
-  const speak = (text) => {
-    Speech.stop();
-    Speech.speak(text, { language: 'en-US', rate: 0.85 });
+  // Učitavanje sačuvanih podataka pri pokretanju
+  useEffect(() => {
+    loadInitialData();
+  }, []);
+
+  const loadInitialData = async () => {
+    try {
+      setDictionary(rawDictionaryData || []);
+      
+      const savedLearned = await AsyncStorage.getItem('@traveleng_learned');
+      if (savedLearned) setLearnedWords(JSON.parse(savedLearned));
+
+      const savedFavorites = await AsyncStorage.getItem('@traveleng_favorites');
+      if (savedFavorites) setFavoriteWords(JSON.parse(savedFavorites));
+    } catch (e) {
+      console.error('Greška pri učitavanju lokalnih podataka:', e);
+    }
   };
 
-  if (activeModule === 'numbers') {
+  // Funkcija za označi/odznači naučenu reč
+  const toggleLearned = async (wordId) => {
+    let updated;
+    if (learnedWords.includes(wordId)) {
+      updated = learnedWords.filter(id => id !== wordId);
+    } else {
+      updated = [...learnedWords, wordId];
+    }
+    setLearnedWords(updated);
+    await AsyncStorage.setItem('@traveleng_learned', JSON.stringify(updated));
+  };
+
+  // Funkcija za izgovor reči (TTS)
+  const speakWord = (text) => {
+    try {
+      Speech.speak(text, { language: 'en-US' });
+    } catch (e) {
+      Alert.alert('Greška', 'Sinteza govora nije dostupna na ovom uređaju.');
+    }
+  };
+
+  // RENDEROVANJE EKRANA
+
+  // 1. POČETNI EKRAN (Sa Slike 2)
+  const renderHomeScreen = () => {
+    const modules = [
+      { id: 'HOME', name: 'Početna', desc: 'Dnevni napredak i ciljevi', icon: '🏠' },
+      { id: 'LEARN', name: 'Učenje engleskog', desc: 'Lekcije po nivoima (A1-B2)', icon: '📚' },
+      { id: 'DOLCH', name: 'Dolch lista reči', desc: '315 osnovnih reči i imenica', icon: '🔤' },
+      { id: 'DICT', name: 'Rečnik', desc: `Pretraga ${dictionary.length}+ englesko-srpskih reči`, icon: '📖' },
+      { id: 'QUIZ', name: 'Kvizovi i testovi', desc: 'Provera znanja kroz 8 tipova pitanja', icon: '🧩' },
+      { id: 'GRAMMAR', name: 'Gramatika', desc: 'Lekcije i objašnjenja na srpskom', icon: '📝' },
+      { id: 'TRANSLATE', name: 'Prevodilac', desc: 'Englesko-srpski prevod', icon: '🌐' },
+      { id: 'PRONUNCIATION', name: 'Izgovor i slušanje', desc: 'Slušanje i vežbe izgovora', icon: '🎧' },
+      { id: 'TRAVEL', name: 'Engleski za putovanja', desc: 'Aerodrom, hotel, restoran, apoteka', icon: '✈️' },
+      { id: 'MY_WORDS', name: 'Moje reči', desc: 'Lični rečnik i omiljene reči', icon: '⭐' },
+      { id: 'STATS', name: 'Statistika napretka', desc: 'Praćenje savladanih reči', icon: '📊' },
+      { id: 'SETTINGS', name: 'Podešavanja', desc: 'Dnevni cilj i opcije', icon: '⚙️' },
+    ];
+
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-        <View style={styles.headerRow}>
-          <TouchableOpacity style={styles.backButton} onPress={() => setActiveModule('home')}>
-            <Text style={styles.backButtonText}>← Nazad na Meni</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.moduleTitle}>🔢 Učimo Brojeve</Text>
-        <Text style={styles.moduleSubtitle}>Dodirni karticu za zvučni izgovor</Text>
-
-        <FlatList
-          data={appData.numbers || []}
-          keyExtractor={(item, index) => item.id || index.toString()}
-          numColumns={2}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.numberCard} onPress={() => speak(item.word)}>
-              <Text style={styles.numberDigit}>{item.number}</Text>
-              <Text style={styles.numberWord}>{item.word}</Text>
-              <Text style={styles.phoneticBadge}>{item.phonetic}</Text>
-              <Text style={styles.audioIcon}>🔊</Text>
-            </TouchableOpacity>
-          )}
-        />
-      </SafeAreaView>
-    );
-  }
-
-  if (activeModule === 'spelling') {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-        <View style={styles.headerRow}>
-          <TouchableOpacity style={styles.backButton} onPress={() => setActiveModule('home')}>
-            <Text style={styles.backButtonText}>← Nazad na Meni</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.moduleTitle}>🔤 Slova i Spelovanje</Text>
-        <Text style={styles.moduleSubtitle}>Izgovor alfabeta i primera reči</Text>
-
-        <FlatList
-          data={appData.alphabet || []}
-          keyExtractor={(item) => item.letter}
-          numColumns={3}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.letterCard} onPress={() => speak(item.letter)}>
-              <Text style={styles.letterBig}>{item.letter}</Text>
-              <Text style={styles.letterPhonetic}>{item.izgovor || item.phonetic}</Text>
-              <Text style={styles.letterExample}>{item.word}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      </SafeAreaView>
-    );
-  }
-
-  if (activeModule === 'dictionary') {
-    const dictionaryList = appData.words || [];
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-        <View style={styles.headerRow}>
-          <TouchableOpacity style={styles.backButton} onPress={() => setActiveModule('home')}>
-            <Text style={styles.backButtonText}>← Nazad na Meni</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.moduleTitle}>📚 Rečnik</Text>
-        <Text style={styles.moduleSubtitle}>Ukupno uneto: {dictionaryList.length} reči</Text>
-
-        <FlatList
-          data={dictionaryList}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.wordRow} onPress={() => speak(item.word || '')}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.wordEnglish}>{item.word}</Text>
-                <Text style={styles.wordSerbian}>{item.translation}</Text>
-              </View>
-              <Text style={styles.audioIcon}>🔊</Text>
-            </TouchableOpacity>
-          )}
-        />
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        
-        <View style={styles.topBanner}>
-          <Text style={styles.welcomeTitle}>Dobrodošli u Traveleng! 🚀</Text>
-          <View style={styles.streakPill}>
-            <Text style={styles.streakText}>Dnevni cilj: 10/20 minuta | Streak: 🔥 3 dana</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Banner - Dobrodošli */}
+        <View class={styles.banner}>
+          <Text style={styles.bannerTitle}>Dobrodošli u Traveleng! 🚀</Text>
+          <View style={styles.badgeContainer}>
+            <Text style={styles.badgeText}>
+              Dnevni cilj: {learnedWords.length}/{dailyTarget} minuta | Streak: 🔥 {streakDays} dana
+            </Text>
           </View>
         </View>
 
-        <Text style={styles.sectionHeader}>Glavni moduli za tablet</Text>
+        <Text style={styles.sectionTitle}>Glavni moduli za tablet</Text>
 
-        <View style={styles.bentoGrid}>
-          
-          <TouchableOpacity style={styles.bentoCard} onPress={() => setActiveModule('dictionary')}>
-            <View style={styles.iconContainer}>
-              <Text style={styles.cardIcon}>📖</Text>
-            </View>
-            <View style={styles.cardTextContent}>
-              <Text style={styles.cardTitle}>Rečnik</Text>
-              <Text style={styles.cardSubtitle}>Pretraga 2000+ englesko-srpskih reči</Text>
-            </View>
-            <Text style={styles.arrowIcon}>➔</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.bentoCard} onPress={() => setActiveModule('numbers')}>
-            <View style={styles.iconContainer}>
-              <Text style={styles.cardIcon}>🔢</Text>
-            </View>
-            <View style={styles.cardTextContent}>
-              <Text style={styles.cardTitle}>Učimo Brojeve</Text>
-              <Text style={styles.cardSubtitle}>Brojanje, pisanje i zvučni izgovor</Text>
-            </View>
-            <Text style={styles.arrowIcon}>➔</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.bentoCard} onPress={() => setActiveModule('spelling')}>
-            <View style={styles.iconContainer}>
-              <Text style={styles.cardIcon}>🔤</Text>
-            </View>
-            <View style={styles.cardTextContent}>
-              <Text style={styles.cardTitle}>Slova i Spelovanje</Text>
-              <Text style={styles.cardSubtitle}>Alfabet, izgovor i primeri</Text>
-            </View>
-            <Text style={styles.arrowIcon}>➔</Text>
-          </TouchableOpacity>
-
+        {/* Grid Kartica (2 kolone za tablet) */}
+        <View style={styles.grid}>
+          {modules.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              style={[styles.card, IS_TABLET && styles.cardTablet]}
+              onPress={() => setCurrentScreen(item.id)}
+            >
+              <Text style={styles.cardIcon}>{item.icon}</Text>
+              <View style={styles.cardTextContainer}>
+                <Text style={styles.cardTitle}>{item.name}</Text>
+                <Text style={styles.cardDesc}>{item.desc}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
-
       </ScrollView>
+    );
+  };
+
+  // 2. EKRAN ZA UČENJE REČI (Sa Slike 1)
+  const renderLearnScreen = () => {
+    const activeWord = dictionary[0] || {
+      en: 'welcome',
+      sr: 'dobrodošli',
+      phonetic_sr: 'velkam',
+      category: 'Osnovni pozdravi',
+      id: '1'
+    };
+
+    const isLearned = learnedWords.includes(activeWord.id);
+
+    return (
+      <View style={styles.learnContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('HOME')}>
+          <Text style={styles.backButtonText}>← Nazad na početnu</Text>
+        </TouchableOpacity>
+
+        <View style={styles.learnCard}>
+          <Text style={styles.categoryBadge}>{activeWord.category || 'A1 — Osnovno'}</Text>
+          
+          <Text style={styles.wordEn}>{activeWord.en.toUpperCase()}</Text>
+          <Text style={styles.wordPhonetic}>[{activeWord.phonetic_sr}]</Text>
+          <Text style={styles.wordSr}>{activeWord.sr}</Text>
+
+          <View style={styles.actionRow}>
+            <TouchableOpacity style={styles.btnSpeak} onPress={() => speakWord(activeWord.en)}>
+              <Text style={styles.btnText}>🔊 Izgovori</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.btnLearned, isLearned && styles.btnLearnedActive]} 
+              onPress={() => toggleLearned(activeWord.id)}
+            >
+              <Text style={styles.btnText}>
+                {isLearned ? '✓ Naučeno' : 'Označi kao naučeno'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#111827" />
+      {currentScreen === 'HOME' ? renderHomeScreen() : renderLearnScreen()}
     </SafeAreaView>
   );
 }
@@ -172,187 +175,145 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
-    paddingHorizontal: 16,
-    paddingTop: 10,
+    backgroundColor: '#f4f6f9',
   },
   scrollContent: {
-    paddingBottom: 30,
+    padding: 16,
   },
-  topBanner: {
-    backgroundColor: '#0F172A',
-    borderRadius: 20,
+  banner: {
+    backgroundColor: '#111827',
+    borderRadius: 12,
     padding: 20,
-    marginTop: 10,
     marginBottom: 20,
   },
-  welcomeTitle: {
-    color: '#FFFFFF',
+  bannerTitle: {
+    color: '#ffffff',
     fontSize: 22,
-    fontWeight: '800',
-    marginBottom: 8,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  streakPill: {
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    paddingHorizontal: 12,
+  badgeContainer: {
+    backgroundColor: '#064e3b',
     paddingVertical: 6,
-    borderRadius: 10,
+    paddingHorizontal: 12,
+    borderRadius: 8,
     alignSelf: 'flex-start',
   },
-  streakText: {
-    color: '#34D399',
-    fontSize: 13,
-    fontWeight: '700',
+  badgeText: {
+    color: '#34d399',
+    fontWeight: '600',
+    fontSize: 14,
   },
-  sectionHeader: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 14,
-    marginLeft: 4,
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 16,
   },
-  bentoGrid: {
-    gap: 12,
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
-  bentoCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
+  card: {
+    backgroundColor: '#ffffff',
+    width: '100%',
+    borderRadius: 12,
     padding: 16,
+    marginBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#e5e7eb',
+    elevation: 2,
   },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: '#F1F5F9',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 14,
+  cardTablet: {
+    width: '48.5%', // 2 kolone za tablet
   },
   cardIcon: {
-    fontSize: 24,
+    fontSize: 32,
+    marginRight: 16,
   },
-  cardTextContent: {
+  cardTextContainer: {
     flex: 1,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#0F172A',
-  },
-  cardSubtitle: {
-    fontSize: 13,
-    color: '#64748B',
-    marginTop: 2,
-  },
-  arrowIcon: {
-    fontSize: 16,
-    color: '#10B981',
     fontWeight: 'bold',
-    marginLeft: 8,
+    color: '#0f172a',
+    marginBottom: 4,
   },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
+  cardDesc: {
+    fontSize: 13,
+    color: '#64748b',
+  },
+  learnContainer: {
+    flex: 1,
+    padding: 20,
   },
   backButton: {
-    paddingVertical: 8,
-    paddingRight: 12,
+    paddingVertical: 10,
+    marginBottom: 20,
   },
   backButtonText: {
-    color: '#10B981',
-    fontWeight: '700',
+    color: '#2563eb',
     fontSize: 16,
+    fontWeight: '600',
   },
-  moduleTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#0F172A',
-  },
-  moduleSubtitle: {
-    fontSize: 14,
-    color: '#64748B',
-    marginBottom: 16,
-  },
-  numberCard: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    margin: 6,
-    padding: 16,
+  learnCard: {
+    backgroundColor: '#ffffff',
     borderRadius: 16,
+    padding: 30,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
+    elevation: 3,
   },
-  numberDigit: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#10B981',
-  },
-  numberWord: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0F172A',
-    marginTop: 4,
-  },
-  phoneticBadge: {
-    fontSize: 12,
-    color: '#64748B',
-    marginTop: 2,
-  },
-  audioIcon: {
-    fontSize: 14,
-    marginTop: 8,
-  },
-  letterCard: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    margin: 5,
-    paddingVertical: 16,
-    paddingHorizontal: 8,
-    borderRadius: 16,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  letterBig: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#0F172A',
-  },
-  letterPhonetic: {
-    fontSize: 13,
-    color: '#10B981',
-    fontWeight: '700',
-    marginTop: 2,
-  },
-  letterExample: {
-    fontSize: 11,
-    color: '#64748B',
-    marginTop: 4,
-  },
-  wordRow: {
-    backgroundColor: '#FFFFFF',
-    padding: 16,
+  categoryBadge: {
+    backgroundColor: '#e0e7ff',
+    color: '#4338ca',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     borderRadius: 12,
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  wordEn: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#0f172a',
     marginBottom: 8,
+  },
+  wordPhonetic: {
+    fontSize: 18,
+    color: '#64748b',
+    marginBottom: 12,
+  },
+  wordSr: {
+    fontSize: 24,
+    color: '#1e293b',
+    marginBottom: 30,
+  },
+  actionRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
+    gap: 12,
   },
-  wordEnglish: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0F172A',
+  btnSpeak: {
+    backgroundColor: '#2563eb',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
   },
-  wordSerbian: {
-    fontSize: 14,
-    color: '#64748B',
-    marginTop: 2,
-  }
+  btnLearned: {
+    backgroundColor: '#10b981',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  btnLearnedActive: {
+    backgroundColor: '#059669',
+  },
+  btnText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
 });
