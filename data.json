@@ -1,262 +1,697 @@
-[
-  {
-    "id": "a1_001",
-    "en": "welcome",
-    "sr": "dobrodošli",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "verb",
-    "ipa": "/ˈwel.kəm/",
-    "phonetic_sr": "velkam",
-    "example_en": "Welcome to Traveleng!",
-    "example_sr": "Dobrodošli u Traveleng!",
-    "irregular": null
+{
+  "app": {
+    "id": "traveleng",
+    "name": "Traveleng",
+    "subtitle": "Uči engleski",
+    "language": "sr",
+    "targetLanguages": [
+      "en",
+      "sr"
+    ],
+    "cefrLevels": [
+      "A1",
+      "A2",
+      "B1",
+      "B2"
+    ],
+    "version": "1.0.0",
+    "contentStatus": "starter_structure",
+    "notes": [
+      "Ovaj fajl definiše strukturu sadržaja za 12 glavnih modula i sadrži početni, pregledani uzorak rečnika.",
+      "Nije kompletna baza od 3000 reči. Ne prikazivati ukupan broj kao 3000 dok stvarna baza ne bude dopunjena i validirana.",
+      "Ako postojeći App.js očekuje da je data.json direktno niz reči, prvo prilagoditi učitavanje aplikacije ovoj strukturi ili čuvati vocabulary kao poseban fajl."
+    ]
   },
-  {
-    "id": "a1_002",
-    "en": "hello",
-    "sr": "zdravo",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "interjection",
-    "ipa": "/həˈləʊ/",
-    "phonetic_sr": "helo",
-    "example_en": "Hello, how are you?",
-    "example_sr": "Zdravo, kako si?",
-    "irregular": null
+  "modules": [
+    {
+      "id": "home",
+      "order": 1,
+      "icon": "🏠",
+      "title": "Početna",
+      "description": "Dnevni napredak i ciljevi učenja",
+      "route": "Home",
+      "features": [
+        "dailyGoal",
+        "learningStreak",
+        "continueLearning",
+        "learnedWordCount",
+        "recommendedActivity"
+      ]
+    },
+    {
+      "id": "learning",
+      "order": 2,
+      "icon": "📚",
+      "title": "Učenje engleskog",
+      "description": "Tematske lekcije i učenje po CEFR nivoima A1–B2",
+      "route": "Learning",
+      "features": [
+        "cefrLevels",
+        "topicLessons",
+        "flashcards",
+        "examples",
+        "progressTracking"
+      ]
+    },
+    {
+      "id": "dolch",
+      "order": 3,
+      "icon": "🔤",
+      "title": "Dolch lista reči",
+      "description": "Pregled Dolch liste i osnovnih reči za čitanje",
+      "route": "Dolch",
+      "features": [
+        "wordGroups",
+        "translation",
+        "markKnown",
+        "quiz"
+      ]
+    },
+    {
+      "id": "dictionary",
+      "order": 4,
+      "icon": "📖",
+      "title": "Rečnik",
+      "description": "Pretraga englesko-srpske baze reči",
+      "route": "Dictionary",
+      "features": [
+        "searchEnglish",
+        "searchSerbian",
+        "filterLevel",
+        "filterCategory",
+        "wordDetails"
+      ]
+    },
+    {
+      "id": "quizzes",
+      "order": 5,
+      "icon": "🧩",
+      "title": "Kvizovi i testovi",
+      "description": "Provera znanja kroz osam tipova pitanja",
+      "route": "Quizzes",
+      "features": [
+        "multipleChoiceTranslation",
+        "chooseEnglishWord",
+        "matching",
+        "fillBlank",
+        "grammarChoice",
+        "sentenceOrder",
+        "sentenceTranslation",
+        "readingComprehension"
+      ]
+    },
+    {
+      "id": "grammar",
+      "order": 6,
+      "icon": "📝",
+      "title": "Gramatika",
+      "description": "Lekcije i detaljna objašnjenja na srpskom jeziku",
+      "route": "Grammar",
+      "features": [
+        "levelFilters",
+        "rules",
+        "positiveNegativeQuestions",
+        "examples",
+        "exercises",
+        "commonMistakes"
+      ]
+    },
+    {
+      "id": "translator",
+      "order": 7,
+      "icon": "🌐",
+      "title": "Prevodilac",
+      "description": "Dvosmerni englesko-srpski prevod",
+      "route": "Translator",
+      "features": [
+        "englishToSerbian",
+        "serbianToEnglish",
+        "dictionaryFallback",
+        "clearInput",
+        "copyResult"
+      ],
+      "limitations": [
+        "Potpun prevod rečenica može zahtevati internet servis; ne prikazivati rečničku zamenu kao pun mašinski prevod."
+      ]
+    },
+    {
+      "id": "pronunciation",
+      "order": 8,
+      "icon": "🎧",
+      "title": "Izgovor i slušanje",
+      "description": "Slušanje zvuka i vežbe izgovora",
+      "route": "Pronunciation",
+      "features": [
+        "textToSpeech",
+        "listenAndChoose",
+        "repeatAudio",
+        "phoneticHint"
+      ],
+      "limitations": [
+        "TTS i prepoznavanje govora zavise od uređaja, jezika i dostupnih biblioteka."
+      ]
+    },
+    {
+      "id": "travel",
+      "order": 9,
+      "icon": "✈️",
+      "title": "Engleski za putovanja",
+      "description": "Praktične situacije na aerodromu, u hotelu, restoranu i apoteci",
+      "route": "TravelEnglish",
+      "features": [
+        "airport",
+        "hotel",
+        "restaurant",
+        "pharmacy",
+        "transport",
+        "askingDirections",
+        "emergencyPhrases",
+        "dialogues"
+      ]
+    },
+    {
+      "id": "myWords",
+      "order": 10,
+      "icon": "⭐",
+      "title": "Moje reči",
+      "description": "Lični rečnik sa sačuvanim i omiljenim rečima",
+      "route": "MyWords",
+      "features": [
+        "favorites",
+        "savedWords",
+        "knownWords",
+        "difficultWords",
+        "spacedRepetition"
+      ]
+    },
+    {
+      "id": "statistics",
+      "order": 11,
+      "icon": "📊",
+      "title": "Statistika napretka",
+      "description": "Praćenje savladanih reči, lekcija i rezultata",
+      "route": "Statistics",
+      "features": [
+        "learnedWords",
+        "completedLessons",
+        "quizAccuracy",
+        "studyStreak",
+        "dailyGoalProgress"
+      ]
+    },
+    {
+      "id": "settings",
+      "order": 12,
+      "icon": "⚙️",
+      "title": "Podešavanja",
+      "description": "Dnevni cilj i opcije aplikacije",
+      "route": "Settings",
+      "features": [
+        "dailyGoal",
+        "startingLevel",
+        "soundEnabled",
+        "textSize",
+        "resetProgress",
+        "appInfo"
+      ]
+    }
+  ],
+  "vocabulary": [
+    {
+      "id": "a1_001",
+      "en": "welcome",
+      "sr": "dobrodošli; dočekati",
+      "level": "A1",
+      "category": "Osnovni pozdravi",
+      "pos": "verb/interjection",
+      "ipa": "/ˈwel.kəm/",
+      "phonetic_sr": "velkam",
+      "example_en": "Welcome to Traveleng!",
+      "example_sr": "Dobrodošli u Traveleng!",
+      "irregular": null
+    },
+    {
+      "id": "a1_002",
+      "en": "hello",
+      "sr": "zdravo",
+      "level": "A1",
+      "category": "Osnovni pozdravi",
+      "pos": "interjection",
+      "ipa": "/həˈləʊ/",
+      "phonetic_sr": "helou",
+      "example_en": "Hello, how are you?",
+      "example_sr": "Zdravo, kako si?",
+      "irregular": null
+    },
+    {
+      "id": "a1_003",
+      "en": "goodbye",
+      "sr": "doviđenja",
+      "level": "A1",
+      "category": "Osnovni pozdravi",
+      "pos": "interjection",
+      "ipa": "/ˌɡʊdˈbaɪ/",
+      "phonetic_sr": "gudbaj",
+      "example_en": "Goodbye, see you tomorrow!",
+      "example_sr": "Doviđenja, vidimo se sutra!",
+      "irregular": null
+    },
+    {
+      "id": "a1_004",
+      "en": "please",
+      "sr": "molim; molim vas",
+      "level": "A1",
+      "category": "Učtivi izrazi",
+      "pos": "adverb/interjection",
+      "ipa": "/pliːz/",
+      "phonetic_sr": "pliiz",
+      "example_en": "Can I have some water, please?",
+      "example_sr": "Mogu li dobiti malo vode, molim vas?",
+      "irregular": null
+    },
+    {
+      "id": "a1_005",
+      "en": "thank you",
+      "sr": "hvala",
+      "level": "A1",
+      "category": "Učtivi izrazi",
+      "pos": "phrase",
+      "ipa": "/ˈθæŋk juː/",
+      "phonetic_sr": "thenk ju",
+      "example_en": "Thank you for your help.",
+      "example_sr": "Hvala vam na pomoći.",
+      "irregular": null
+    },
+    {
+      "id": "a1_006",
+      "en": "yes",
+      "sr": "da",
+      "level": "A1",
+      "category": "Osnovni izrazi",
+      "pos": "adverb",
+      "ipa": "/jes/",
+      "phonetic_sr": "jes",
+      "example_en": "Yes, I understand.",
+      "example_sr": "Da, razumem.",
+      "irregular": null
+    },
+    {
+      "id": "a1_007",
+      "en": "no",
+      "sr": "ne",
+      "level": "A1",
+      "category": "Osnovni izrazi",
+      "pos": "adverb",
+      "ipa": "/nəʊ/",
+      "phonetic_sr": "nou",
+      "example_en": "No, thank you.",
+      "example_sr": "Ne, hvala.",
+      "irregular": null
+    },
+    {
+      "id": "a1_008",
+      "en": "one",
+      "sr": "jedan; jedna; jedno",
+      "level": "A1",
+      "category": "Brojevi i vreme",
+      "pos": "numeral",
+      "ipa": "/wʌn/",
+      "phonetic_sr": "van",
+      "example_en": "I have one ticket.",
+      "example_sr": "Imam jednu kartu.",
+      "irregular": null
+    },
+    {
+      "id": "a1_009",
+      "en": "two",
+      "sr": "dva; dve",
+      "level": "A1",
+      "category": "Brojevi i vreme",
+      "pos": "numeral",
+      "ipa": "/tuː/",
+      "phonetic_sr": "tuu",
+      "example_en": "Two coffees, please.",
+      "example_sr": "Dve kafe, molim vas.",
+      "irregular": null
+    },
+    {
+      "id": "a1_010",
+      "en": "three",
+      "sr": "tri",
+      "level": "A1",
+      "category": "Brojevi i vreme",
+      "pos": "numeral",
+      "ipa": "/θriː/",
+      "phonetic_sr": "thrii",
+      "example_en": "It costs three dollars.",
+      "example_sr": "Košta tri dolara.",
+      "irregular": null
+    },
+    {
+      "id": "a1_011",
+      "en": "Monday",
+      "sr": "ponedeljak",
+      "level": "A1",
+      "category": "Brojevi i vreme",
+      "pos": "noun",
+      "ipa": "/ˈmʌn.deɪ/",
+      "phonetic_sr": "mandej",
+      "example_en": "See you on Monday.",
+      "example_sr": "Vidimo se u ponedeljak.",
+      "irregular": null
+    },
+    {
+      "id": "a1_012",
+      "en": "time",
+      "sr": "vreme; vreme na satu",
+      "level": "A1",
+      "category": "Brojevi i vreme",
+      "pos": "noun",
+      "ipa": "/taɪm/",
+      "phonetic_sr": "tajm",
+      "example_en": "What time is it?",
+      "example_sr": "Koliko je sati?",
+      "irregular": null
+    },
+    {
+      "id": "a1_013",
+      "en": "family",
+      "sr": "porodica",
+      "level": "A1",
+      "category": "Porodica i ljudi",
+      "pos": "noun",
+      "ipa": "/ˈfæm.əl.i/",
+      "phonetic_sr": "femili",
+      "example_en": "I love my family.",
+      "example_sr": "Volim svoju porodicu.",
+      "irregular": null
+    },
+    {
+      "id": "a1_014",
+      "en": "mother",
+      "sr": "majka",
+      "level": "A1",
+      "category": "Porodica i ljudi",
+      "pos": "noun",
+      "ipa": "/ˈmʌð.ər/",
+      "phonetic_sr": "mader",
+      "example_en": "My mother is a doctor.",
+      "example_sr": "Moja majka je lekarka.",
+      "irregular": null
+    },
+    {
+      "id": "a1_015",
+      "en": "father",
+      "sr": "otac",
+      "level": "A1",
+      "category": "Porodica i ljudi",
+      "pos": "noun",
+      "ipa": "/ˈfɑː.ðər/",
+      "phonetic_sr": "fader",
+      "example_en": "My father works in a bank.",
+      "example_sr": "Moj otac radi u banci.",
+      "irregular": null
+    },
+    {
+      "id": "a1_016",
+      "en": "brother",
+      "sr": "brat",
+      "level": "A1",
+      "category": "Porodica i ljudi",
+      "pos": "noun",
+      "ipa": "/ˈbrʌð.ər/",
+      "phonetic_sr": "brader",
+      "example_en": "I have one brother.",
+      "example_sr": "Imam jednog brata.",
+      "irregular": null
+    },
+    {
+      "id": "a1_017",
+      "en": "sister",
+      "sr": "sestra",
+      "level": "A1",
+      "category": "Porodica i ljudi",
+      "pos": "noun",
+      "ipa": "/ˈsɪs.tər/",
+      "phonetic_sr": "sister",
+      "example_en": "My sister is a student.",
+      "example_sr": "Moja sestra je studentkinja.",
+      "irregular": null
+    },
+    {
+      "id": "a1_018",
+      "en": "water",
+      "sr": "voda",
+      "level": "A1",
+      "category": "Hrana i piće",
+      "pos": "noun",
+      "ipa": "/ˈwɔː.tər/",
+      "phonetic_sr": "voter",
+      "example_en": "A glass of water, please.",
+      "example_sr": "Čašu vode, molim vas.",
+      "irregular": null
+    },
+    {
+      "id": "a1_019",
+      "en": "bread",
+      "sr": "hleb",
+      "level": "A1",
+      "category": "Hrana i piće",
+      "pos": "noun",
+      "ipa": "/bred/",
+      "phonetic_sr": "bred",
+      "example_en": "Fresh bread is delicious.",
+      "example_sr": "Svež hleb je ukusan.",
+      "irregular": null
+    },
+    {
+      "id": "a1_020",
+      "en": "apple",
+      "sr": "jabuka",
+      "level": "A1",
+      "category": "Hrana i piće",
+      "pos": "noun",
+      "ipa": "/ˈæp.əl/",
+      "phonetic_sr": "epəl",
+      "example_en": "I eat an apple every day.",
+      "example_sr": "Svakog dana jedem jabuku.",
+      "irregular": null
+    },
+    {
+      "id": "a1_021",
+      "en": "the",
+      "sr": "određeni član; obično se ne prevodi zasebno",
+      "level": "A1",
+      "category": "Osnovna gramatika",
+      "pos": "article",
+      "ipa": "/ðə/ ili /ðiː/",
+      "phonetic_sr": "de ili di (zavisno od konteksta)",
+      "example_en": "The book is on the table.",
+      "example_sr": "Knjiga je na stolu.",
+      "irregular": null
+    },
+    {
+      "id": "a1_022",
+      "en": "and",
+      "sr": "i",
+      "level": "A1",
+      "category": "Osnovne reči",
+      "pos": "conjunction",
+      "ipa": "/ænd/",
+      "phonetic_sr": "end",
+      "example_en": "You and I are friends.",
+      "example_sr": "Ti i ja smo prijatelji.",
+      "irregular": null
+    },
+    {
+      "id": "a1_023",
+      "en": "airport",
+      "sr": "aerodrom",
+      "level": "A1",
+      "category": "Engleski za putovanja",
+      "pos": "noun",
+      "ipa": "/ˈeə.pɔːt/",
+      "phonetic_sr": "erport",
+      "example_en": "Where is the airport?",
+      "example_sr": "Gde se nalazi aerodrom?",
+      "irregular": null
+    },
+    {
+      "id": "a1_024",
+      "en": "hotel",
+      "sr": "hotel",
+      "level": "A1",
+      "category": "Engleski za putovanja",
+      "pos": "noun",
+      "ipa": "/həʊˈtel/",
+      "phonetic_sr": "houtel",
+      "example_en": "My hotel is near the centre.",
+      "example_sr": "Moj hotel je blizu centra.",
+      "irregular": null
+    },
+    {
+      "id": "a1_025",
+      "en": "restaurant",
+      "sr": "restoran",
+      "level": "A1",
+      "category": "Engleski za putovanja",
+      "pos": "noun",
+      "ipa": "/ˈres.tər.ɒnt/",
+      "phonetic_sr": "restəront",
+      "example_en": "Let's go to a restaurant.",
+      "example_sr": "Hajdemo u restoran.",
+      "irregular": null
+    },
+    {
+      "id": "a1_026",
+      "en": "pharmacy",
+      "sr": "apoteka",
+      "level": "A1",
+      "category": "Engleski za putovanja",
+      "pos": "noun",
+      "ipa": "/ˈfɑː.mə.si/",
+      "phonetic_sr": "farmasi",
+      "example_en": "Is there a pharmacy nearby?",
+      "example_sr": "Ima li apoteka u blizini?",
+      "irregular": null
+    },
+    {
+      "id": "a1_027",
+      "en": "ticket",
+      "sr": "karta; ulaznica",
+      "level": "A1",
+      "category": "Engleski za putovanja",
+      "pos": "noun",
+      "ipa": "/ˈtɪk.ɪt/",
+      "phonetic_sr": "tikit",
+      "example_en": "One ticket to London, please.",
+      "example_sr": "Jednu kartu do Londona, molim vas.",
+      "irregular": null
+    },
+    {
+      "id": "a2_001",
+      "en": "travel",
+      "sr": "putovati; putovanje",
+      "level": "A2",
+      "category": "Engleski za putovanja",
+      "pos": "verb/noun",
+      "ipa": "/ˈtræv.əl/",
+      "phonetic_sr": "trevəl",
+      "example_en": "I love to travel in summer.",
+      "example_sr": "Volim da putujem leti.",
+      "irregular": null
+    },
+    {
+      "id": "a2_002",
+      "en": "luggage",
+      "sr": "prtljag",
+      "level": "A2",
+      "category": "Engleski za putovanja",
+      "pos": "noun",
+      "ipa": "/ˈlʌɡ.ɪdʒ/",
+      "phonetic_sr": "lagidž",
+      "example_en": "Where is my luggage?",
+      "example_sr": "Gde je moj prtljag?",
+      "irregular": null
+    },
+    {
+      "id": "b1_001",
+      "en": "experience",
+      "sr": "iskustvo",
+      "level": "B1",
+      "category": "Posao i obrazovanje",
+      "pos": "noun",
+      "ipa": "/ɪkˈspɪə.ri.əns/",
+      "phonetic_sr": "ikspirijens",
+      "example_en": "This was a great experience.",
+      "example_sr": "Ovo je bilo sjajno iskustvo.",
+      "irregular": null
+    },
+    {
+      "id": "b1_002",
+      "en": "recommend",
+      "sr": "preporučiti",
+      "level": "B1",
+      "category": "Svakodnevna komunikacija",
+      "pos": "verb",
+      "ipa": "/ˌrek.əˈmend/",
+      "phonetic_sr": "rekəmend",
+      "example_en": "Can you recommend a good hotel?",
+      "example_sr": "Možete li da preporučite dobar hotel?",
+      "irregular": null
+    }
+  ],
+  "learningSettingsDefaults": {
+    "dailyGoalMinutes": 20,
+    "startingLevel": "A1",
+    "soundEnabled": true,
+    "direction": "en-sr",
+    "theme": "light"
   },
-  {
-    "id": "a1_003",
-    "en": "goodbye",
-    "sr": "doviđenja",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "interjection",
-    "ipa": "/ˌɡʊdˈbaɪ/",
-    "phonetic_sr": "gudbaj",
-    "example_en": "Goodbye, see you tomorrow!",
-    "example_sr": "Doviđenja, vidimo se sutra!",
-    "irregular": null
-  },
-  {
-    "id": "a1_004",
-    "en": "please",
-    "sr": "molim",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "adverb",
-    "ipa": "/pliːz/",
-    "phonetic_sr": "pliz",
-    "example_en": "Can I have some water, please?",
-    "example_sr": "Mogu li dobiti malo vode, molim vas?",
-    "irregular": null
-  },
-  {
-    "id": "a1_005",
-    "en": "thank you",
-    "sr": "hvala",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "phrase",
-    "ipa": "/θæŋk juː/",
-    "phonetic_sr": "thenk ju",
-    "example_en": "Thank you for your help.",
-    "example_sr": "Hvala vam na pomoći.",
-    "irregular": null
-  },
-  {
-    "id": "a1_006",
-    "en": "yes",
-    "sr": "da",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "adverb",
-    "ipa": "/jes/",
-    "phonetic_sr": "jes",
-    "example_en": "Yes, I understand.",
-    "example_sr": "Da, razumem.",
-    "irregular": null
-  },
-  {
-    "id": "a1_007",
-    "en": "no",
-    "sr": "ne",
-    "level": "A1",
-    "category": "Osnovni pozdravi",
-    "pos": "adverb",
-    "ipa": "/nəʊ/",
-    "phonetic_sr": "no",
-    "example_en": "No, thank you.",
-    "example_sr": "Ne, hvala.",
-    "irregular": null
-  },
-  {
-    "id": "a1_008",
-    "en": "family",
-    "sr": "porodica",
-    "level": "A1",
-    "category": "Porodica i ljudi",
-    "pos": "noun",
-    "ipa": "/ˈfæm.əl.i/",
-    "phonetic_sr": "femili",
-    "example_en": "I love my family.",
-    "example_sr": "Volim svoju porodicu.",
-    "irregular": null
-  },
-  {
-    "id": "a1_009",
-    "en": "mother",
-    "sr": "majka",
-    "level": "A1",
-    "category": "Porodica i ljudi",
-    "pos": "noun",
-    "ipa": "/ˈmʌð.ər/",
-    "phonetic_sr": "mader",
-    "example_en": "My mother is a doctor.",
-    "example_sr": "Moja majka je lekar.",
-    "irregular": null
-  },
-  {
-    "id": "a1_010",
-    "en": "father",
-    "sr": "otac",
-    "level": "A1",
-    "category": "Porodica i ljudi",
-    "pos": "noun",
-    "ipa": "/ˈfɑː.ðər/",
-    "phonetic_sr": "fader",
-    "example_en": "My father works in a bank.",
-    "example_sr": "Moj otac radi u banci.",
-    "irregular": null
-  },
-  {
-    "id": "a1_011",
-    "en": "brother",
-    "sr": "brat",
-    "level": "A1",
-    "category": "Porodica i ljudi",
-    "pos": "noun",
-    "ipa": "/ˈbrʌð.ər/",
-    "phonetic_sr": "brader",
-    "example_en": "I have one brother.",
-    "example_sr": "Imam jednog brata.",
-    "irregular": null
-  },
-  {
-    "id": "a1_012",
-    "en": "sister",
-    "sr": "sestra",
-    "level": "A1",
-    "category": "Porodica i ljudi",
-    "pos": "noun",
-    "ipa": "/ˈsɪs.tər/",
-    "phonetic_sr": "sister",
-    "example_en": "My sister is a student.",
-    "example_sr": "Moja sestra je student.",
-    "irregular": null
-  },
-  {
-    "id": "a1_013",
-    "en": "water",
-    "sr": "voda",
-    "level": "A1",
-    "category": "Hrana i piće",
-    "pos": "noun",
-    "ipa": "/ˈwɔː.tər/",
-    "phonetic_sr": "voter",
-    "example_en": "Glass of water, please.",
-    "example_sr": "Čašu vode, molim vas.",
-    "irregular": null
-  },
-  {
-    "id": "a1_014",
-    "en": "bread",
-    "sr": "hleb",
-    "level": "A1",
-    "category": "Hrana i piće",
-    "pos": "noun",
-    "ipa": "/bred/",
-    "phonetic_sr": "bred",
-    "example_en": "Fresh bread is delicious.",
-    "example_sr": "Svež hleb je ukusan.",
-    "irregular": null
-  },
-  {
-    "id": "a1_015",
-    "en": "apple",
-    "sr": "jabuka",
-    "level": "A1",
-    "category": "Hrana i piće",
-    "pos": "noun",
-    "ipa": "/ˈæp.əl/",
-    "phonetic_sr": "epl",
-    "example_en": "An apple a day keeps the doctor away.",
-    "example_sr": "Jedna jabuka na dan čuva zdravlje.",
-    "irregular": null
-  },
-  {
-    "id": "a1_016",
-    "en": "airport",
-    "sr": "aerodrom",
-    "level": "A1",
-    "category": "Engleski za putovanja",
-    "pos": "noun",
-    "ipa": "/ˈeə.pɔːt/",
-    "phonetic_sr": "erport",
-    "example_en": "Where is the airport?",
-    "example_sr": "Gde se nalazi aerodrom?",
-    "irregular": null
-  },
-  {
-    "id": "a1_017",
-    "en": "hotel",
-    "sr": "hotel",
-    "level": "A1",
-    "category": "Engleski za putovanja",
-    "pos": "noun",
-    "ipa": "/həʊˈtel/",
-    "phonetic_sr": "hotel",
-    "example_en": "My hotel is near the center.",
-    "example_sr": "Moj hotel je blizu centra.",
-    "irregular": null
-  },
-  {
-    "id": "a1_018",
-    "en": "restaurant",
-    "sr": "restoran",
-    "level": "A1",
-    "category": "Engleski za putovanja",
-    "pos": "noun",
-    "ipa": "/ˈres.trɒnt/",
-    "phonetic_sr": "restorant",
-    "example_en": "Let's go to a restaurant.",
-    "example_sr": "Hajdemo u restoran.",
-    "irregular": null
-  },
-  {
-    "id": "a1_019",
-    "en": "pharmacy",
-    "sr": "apoteka",
-    "level": "A1",
-    "category": "Engleski za putovanja",
-    "pos": "noun",
-    "ipa": "/ˈfɑː.mə.si/",
-    "phonetic_sr": "farmasi",
-    "example_en": "Is there a pharmacy nearby?",
-    "example_sr": "Ima li apoteka u blizini?",
-    "irregular": null
-  },
-  {
-    "id": "a1_020",
-    "en": "ticket",
-    "sr": "karta",
-    "level": "A1",
-    "category": "Engleski za putovanja",
-    "pos": "noun",
-    "ipa": "/ˈtɪk.ɪt/",
-    "phonetic_sr": "tiket",
-    "example_en": "One ticket to London, please.",
-    "example_sr": "Jedna karta do Londona, molim vas.",
-    "irregular": null
+  "quizTypes": [
+    {
+      "id": "translation_to_sr",
+      "title": "Izaberi tačan prevod",
+      "description": "Izaberi srpsko značenje engleske reči."
+    },
+    {
+      "id": "word_from_sr",
+      "title": "Izaberi englesku reč",
+      "description": "Pronađi englesku reč prema srpskom značenju."
+    },
+    {
+      "id": "matching",
+      "title": "Poveži parove",
+      "description": "Poveži reči sa njihovim prevodima."
+    },
+    {
+      "id": "fill_blank",
+      "title": "Dopuni rečenicu",
+      "description": "Izaberi reč koja nedostaje."
+    },
+    {
+      "id": "grammar_choice",
+      "title": "Gramatika",
+      "description": "Izaberi ispravan gramatički oblik."
+    },
+    {
+      "id": "sentence_order",
+      "title": "Složi rečenicu",
+      "description": "Poređaj reči pravilnim redosledom."
+    },
+    {
+      "id": "sentence_translation",
+      "title": "Prevedi rečenicu",
+      "description": "Prevedi kratku rečenicu."
+    },
+    {
+      "id": "reading_comprehension",
+      "title": "Razumevanje teksta",
+      "description": "Odgovori na pitanja o kratkom tekstu ili dijalogu."
+    }
+  ],
+  "validation": {
+    "minimumVocabularyEntries": 3000,
+    "uniqueBy": [
+      "id",
+      "en"
+    ],
+    "requiredVocabularyFields": [
+      "id",
+      "en",
+      "sr",
+      "level",
+      "category",
+      "pos",
+      "example_en",
+      "example_sr"
+    ],
+    "allowedLevels": [
+      "A1",
+      "A2",
+      "B1",
+      "B2"
+    ],
+    "warning": "Ograničenje od 3000 je cilj validacije, a ne tvrdnja da ovaj početni fajl već sadrži toliko reči."
   }
-]
+}
