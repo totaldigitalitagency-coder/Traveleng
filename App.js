@@ -364,16 +364,33 @@ export default function App() {
       </View>)}
     </ScrollView>;
   };
-
   const renderMyWords = () => {
     const list = dictionary.filter(w => favoriteWords.includes(w.id));
-    return <ScrollView contentContainerStyle={styles.scrollContent}>
-      <Header title="Moje reči" icon="⭐" />
-      <Text style={styles.muted}>Sačuvane reči: {list.length} · Naučene reči: {learnedWords.length}</Text>
-      {list.length ? list.map((word, i) => <View key={word.id || i}><WordCard word={word} showExample={false} /></View> : <View style={styles.panel}><Text style={styles.bodyText}>Još nema sačuvanih reči. Otvori Rečnik ili Učenje i dodirni „Sačuvaj“.</Text></View>}
-    </ScrollView>;
-  };
 
+    return (
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Header title="Moje reči" icon="⭐" />
+
+        <Text style={styles.muted}>
+          Sačuvane reči: {list.length} · Naučene reči: {learnedWords.length}
+        </Text>
+
+        {list.length > 0 ? (
+          list.map((word, i) => (
+            <View key={word.id || i}>
+              <WordCard word={word} showExample={false} />
+            </View>
+          ))
+        ) : (
+          <View style={styles.panel}>
+            <Text style={styles.bodyText}>
+              Još nema sačuvanih reči. Otvori Rečnik ili Učenje i dodirni „Sačuvaj“.
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+    );
+  };
   const renderStats = () => <ScrollView contentContainerStyle={styles.scrollContent}>
     <Header title="Statistika napretka" icon="📊" />
     <View style={styles.statsGrid}>
